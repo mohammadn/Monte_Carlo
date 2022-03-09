@@ -1,0 +1,86 @@
+{% extends "_base.htm" %}
+
+{% block title %}
+	Result
+{% endblock %}
+
+{% block pageblock %}
+	<style>
+		table, th, td {
+			border: 1px solid black;
+			text-align:center;
+		}
+	</style>
+	<div class="up" style="text-align: right;">
+		<h3><a href="index.htm">back to first page</a><br/></h3>
+	</div>
+	 <button style="color: red;" onclick="reset()">Reset History</button><br><br><br>
+	<table id="history" style="width:50%">
+	<tr>
+		<th>Shots</th>
+		<th>Reporting rate</th>
+		<th>Resources</th>
+		<th>Digits</th>
+		<th>Final Pi estimation</th>
+		<th>Cost</th>
+	</tr>
+	
+	</table> <br/><br/><br/>
+	<script>
+		function reset(){
+			localStorage.clear();
+			location.reload(); 
+		};
+
+		var localData = [];
+
+		(function get(){
+			localData = JSON.parse(localStorage.getItem('history'));
+		})();
+
+		console.log(localData)
+		
+		var table = document.getElementById("history");
+
+		for (i = 0; i < localData.length; i++) {
+			var tr = document.createElement("tr");
+
+			var shots = document.createElement("td");
+			var rate = document.createElement("td");
+			var resources = document.createElement("td");
+			var digits = document.createElement("td");
+			var finalPi = document.createElement("td");
+			var Cost = document.createElement("td");
+
+			var shotsText = document.createTextNode(localData[i][0]);
+			shots.appendChild(shotsText);
+
+			var rateText = document.createTextNode(localData[i][1]);
+			rate.appendChild(rateText);
+
+			var resourcesText = document.createTextNode(localData[i][2]);
+			resources.appendChild(resourcesText);
+
+			var digitsText = document.createTextNode(localData[i][3]);
+			digits.appendChild(digitsText);
+
+			var finalPiText = document.createTextNode(localData[i][4]);
+			finalPi.appendChild(finalPiText);
+
+			var CostText = document.createTextNode(localData[i][5]);
+			Cost.appendChild(CostText);
+
+
+
+			tr.appendChild(shots);
+			tr.appendChild(rate);
+			tr.appendChild(resources);
+			tr.appendChild(digits);
+			tr.appendChild(finalPi);
+			tr.appendChild(Cost);
+
+			
+			table.appendChild(tr);
+		}
+	</script>
+{% endblock %}

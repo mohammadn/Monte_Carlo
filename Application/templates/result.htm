@@ -1,0 +1,111 @@
+{% extends "_base.htm" %}
+
+{% block title %}
+	Result
+{% endblock %}
+
+{% block pageblock %}
+	<style>
+		table, th, td {
+			border: 1px solid black;
+			text-align:center;
+		}
+	</style>
+	<div class="up" style="text-align: right;">
+		<h3><a href="index.htm">back to first page</a><br/></h3>
+	</div>
+
+
+	<div class="up" id="chart">
+		<h3>Image Charts</h3>
+		<img src="https://image-charts.com/chart?cht=lc&chd=a:{{stringedResults}}&chdl=Pi|Estimated%20Pi&chs=750x200&chxr=1,3,3.3&chxt=x%2Cy&chco=00FF00,FF0000"
+		classed="displayed" alt="Graph: no internet connection." align="center" /><br/><br/><br/><br/>
+		<a href="/terminate">Switching off Instances</a>
+	</div>
+	<table id="results" style="width:50%">
+	<tr>
+		<th>ResourceID</th>
+		<th>Incircles</th>
+		<th>Shots</th>
+	</tr>
+	
+	</table> <br/><br/><br/>
+	<script>
+		incircles = {{incircles}}
+		resourceId = {{resourceId}}
+		rate = {{rate}}
+		roundNum = {{roundNum}}
+		matched = {{matched}}
+		finalResult = {{finalResult}}
+		pi = {{pi}}
+		finalCost = {{finalCost}}
+		shots = {{shots}}
+		rate = {{rate}}
+		resources = {{resources}}
+		digits = {{digits}}
+		reqCost = {{reqCost}}
+		comCost = {{comCost}}
+		
+		function save(){
+			var session = [shots, rate, resources, digits, finalResult, finalCost]
+			var history = JSON.parse(localStorage.getItem('history')) || [];
+			history.push(session);
+			localStorage.setItem('history', JSON.stringify(history));
+		};
+		
+		window.onload = save();
+
+		var table = document.getElementById("results");
+		var chart = document.getElementById("chart");
+
+		for (i = 0; i < incircles.length; i++) {
+			var tr = document.createElement("tr");
+
+			var incirclesTd = document.createElement("td");
+			var resourceIdTd = document.createElement("td");
+			var shotsTd = document.createElement("td");
+
+			var resourceIdText = document.createTextNode(resourceId[i][0]);
+			resourceIdTd.appendChild(resourceIdText);
+
+			var incirclesText = document.createTextNode(incircles[i]);
+			incirclesTd.appendChild(incirclesText);
+
+			var shotsText = document.createTextNode(rate*incircles[i].length);
+			shotsTd.appendChild(shotsText);
+
+			tr.appendChild(resourceIdTd);
+			tr.appendChild(incirclesTd);
+			tr.appendChild(shotsTd);
+
+			
+			table.appendChild(tr);
+		}
+
+		var extraInfo = document.createElement("p");
+		var cost = document.createElement("h5");
+		var costText = document.createTextNode(' Total Cost: ' + finalCost);
+		var reqCosth5 = document.createElement("h5");
+		var reqCostText = document.createTextNode('Request Cost: ' + reqCost);
+		var comCosth5 = document.createElement("h5");
+		var comCostText = document.createTextNode('Compute Cost: ' + comCost);
+		if (matched == 1) {
+
+			var extraInfoText = document.createTextNode('Pi value matched at round ' + roundNum + '. Final estimation and Pi value are ' + finalResult);
+		
+		} else {
+
+			var extraInfoText = document.createTextNode('Pi value did not macth by running nine times. Pi value is ' + pi + ' but final estimation is ' + finalResult);
+		
+		}
+
+		extraInfo.appendChild(extraInfoText);
+		chart.appendChild(extraInfo);
+		cost.appendChild(costText);
+		reqCosth5.appendChild(reqCostText);
+		comCosth5.appendChild(comCostText);
+		chart.appendChild(comCosth5);
+		chart.appendChild(reqCosth5);
+		chart.appendChild(cost);
+	</script>
+{% endblock %}

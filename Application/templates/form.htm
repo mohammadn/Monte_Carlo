@@ -1,0 +1,31 @@
+<div id="down">
+	<form id="stats" method="post" action="/calculate">
+		Services:
+		<input type="radio" id="ec2" name="service" value="ec2">
+  		<label for="ec2">EC2</label>
+
+  		<input type="radio" id="lambda" name="service" value="lambda" checked>
+  		<label for="lambda">Lambda</label><br><br>
+
+  		<label for="resources">Number of resources:</label>
+		<input type="number" id="resources" name="resources" min="1" max="9" value="3"><br><br>
+
+		<label for="shots">Number of shots:</label>
+ 		<input type="text" id="shots" name="shots" value="10000"><br><br>
+
+ 		<label for="rate">Reporting rate:</label>
+ 		<input type="text" id="rate" name="rate" value="200"><br><br>
+
+		<label for="digits">Number of digits:</label>
+		<input type="number" id="digits" name="digits" min="1" max="15" value="3"><br><br>
+
+		<input type="submit" name="submit" value="Run">
+	</form>
+	
+	{% if note %}
+	<h3 style="color: #11FFFF">
+		{{ note }}
+	</h3>
+	{% endif %}
+	
+</div>
